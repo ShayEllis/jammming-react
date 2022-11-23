@@ -4,7 +4,6 @@ import { SearchResults } from "../SearchResults/SearchResults";
 import { Playlist } from "../Playlist/Playlist";
 import "./App.css";
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -17,30 +16,33 @@ class App extends React.Component {
           id: 1
         },
         {
-          name: "first",
-          artist: "first",
-          album: "first",
-          id: 1
+          name: "Second",
+          artist: "Second",
+          album: "Second",
+          id: 2
         },
         {
-          name: "first",
-          artist: "first",
-          album: "first",
-          id: 1
+          name: "Third",
+          artist: "Third",
+          album: "Third",
+          id: 3
         }
       ],
       playlist: {
-        playlistName: "My Playlist",
-        playlistTracks: [
+        playlistName: "My New Playlist",
+        tracks: [
           {
             name: "Playlist Track 1",
             artist: "Playlist Artist 1",
             album: "Playlist Album 1",
-            id: 1
+            id: 4
           }
         ]
       }
     };
+  }
+  addTrack(track) {
+
   }
   render() {
     return (
@@ -50,7 +52,7 @@ class App extends React.Component {
           <SearchBar />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults}/>
-            <Playlist playlistName={this.state.playlist.playlistName} playlistTracks={this.state.playlist.playlistTracks} />
+            <Playlist playlistName={this.state.playlist.playlistName} playlistTracks={this.state.playlist.tracks} />
           </div>
         </div>
       </div>
