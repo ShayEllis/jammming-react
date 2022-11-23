@@ -7,12 +7,12 @@ export class TrackList extends React.Component {
         super(props);
     }
     render() {
+        const tracks = this.props.searchResults.map(track => <Track trackName={track.name} trackArtist={track.artist} trackAlbum={track.album} key={track.id} />);
+
         return (
             <div className="TrackList">
                 <ul>
-                    <Track />
-                    <Track />
-                    <Track />
+                    {tracks}
                 </ul>
             </div>
         );
