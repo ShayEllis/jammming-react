@@ -15,10 +15,10 @@ const Spotify = {
         if (accessToken && experation) {
             accessToken = accessToken[0];
             experation = experation[0];
-            window.setTimeout(() => accessToken = '', experation * 1000);
-            window.history.pushState('Access Token', null, '/');
+            setTimeout(() => accessToken = '', experation * 1000);
+            history.pushState('Access Token', null, '/');
         } else {
-            window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
+            location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
         }
     }
 }
