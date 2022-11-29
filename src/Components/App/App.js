@@ -2,6 +2,7 @@ import React from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { SearchResults } from "../SearchResults/SearchResults";
 import { Playlist } from "../Playlist/Playlist";
+import Spotify from "../../util/Spotify";
 import "./App.css";
 
 class App extends React.Component {
@@ -65,11 +66,10 @@ class App extends React.Component {
     return tracks.map(track => track.uri);
   }
   search(searchTerm) {
-    console.log(searchTerm);
+    Spotify.search(searchTerm).then(results => {
+      this.setState({ searchResults:  results})
+    })
   }
-  //Get a Spotify user's access token
-
-  //Send a search request to the Spotify API
 
   //Save a user's playlist to their Spotify account
   render() {
