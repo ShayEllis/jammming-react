@@ -4,6 +4,14 @@ let accessToken;
 
 const Spotify = {
     getAccessToken() {
+        // see if there is a way to save token in browser 
+        // also generate token when the page loads
+        // currently the page clears and generates a token only when the search button is clicked
+        // this causes current info to be cleared and searched a second time
+        
+        //After user redirect on login, restoring the search term from before the redirect
+        //Ensure playlist information doesn’t get cleared if a user has to refresh their access token
+
         if (accessToken) {
             return accessToken;
         }
@@ -86,6 +94,17 @@ const Spotify = {
                     return jsonResponse.snapshot_id;
                 })
             })
+    },
+    getAllPlaylists() {
+        // endpoint: https://api.spotify.com//v1/me/playlists
+
+        // try to find liked songs
+
+        // get list of tracks
+
+        // sort tracks
+
+        // update currnt spotify playlist
     }
 }
 
