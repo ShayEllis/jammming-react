@@ -38,9 +38,6 @@ const Spotify = {
 
         return fetch(`https://api.spotify.com/v1/search?type=track&q=${searchTerm}`, { headers: { Authorization: `Bearer ${accessToken}` } })
             .then(response => {
-                if (!response.ok) {
-                    throw Error(response.status);
-                };
                 return response.json();
             })
             .then(jsonResponse => {
@@ -96,7 +93,16 @@ const Spotify = {
             })
     },
     getAllPlaylists() {
-        // endpoint: https://api.spotify.com//v1/me/playlists
+        accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` }
+
+        const getPlaylists = async (headers) => {
+            const response = await fetch('https://api.spotify.com/v1/me/playlists', {headers: headers});
+            const jsonResponse = await response.json();
+            console.log(jsonResponse);
+        }
+
+        getPlaylists(headers);
 
         // try to find liked songs
 

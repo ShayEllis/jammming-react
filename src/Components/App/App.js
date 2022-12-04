@@ -1,5 +1,6 @@
 import React from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
+import AllPlaylists from '../AllPlaylists/AllPlaylists';
 import { SearchResults } from "../SearchResults/SearchResults";
 import { Playlist } from "../Playlist/Playlist";
 import Spotify from "../../util/Spotify";
@@ -10,6 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchResults: [],
+      allPlaylists: [],
       playlistName: "New Playlist",
       playlistTracks: []
     };
@@ -48,11 +50,11 @@ class App extends React.Component {
   }
   search(searchTerm) {
     Spotify.search(searchTerm).then(results => {
+      Spotify.getAllPlaylists() //Testing new function - Create its own button
       this.setState({ searchResults:  results})
     })
   }
 
-  //Save a user's playlist to their Spotify account
   render() {
     return (
       <div>
@@ -60,7 +62,13 @@ class App extends React.Component {
         <div className="App">
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
+            <AllPlaylists 
+              allPlaylists={this.state.allPlaylists}
+            />
+            <SearchResults 
+              searchResults={this.state.searchResults} 
+              onAdd={this.addTrack} 
+            />
             <Playlist 
               playlistName={this.state.playlistName} 
               onNameChange={this.updatePlaylistName} 
