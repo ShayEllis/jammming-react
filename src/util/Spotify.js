@@ -26,7 +26,7 @@ const Spotify = {
             return accessToken
         } else {
             let accessUrl = "https://accounts.spotify.com/authorize?response_type=token";
-            const scope = "user-read-private playlist-modify-private";
+            const scope = "user-read-private playlist-modify-private user-library-read user-library-modify";
             accessUrl += `&client_id=${encodeURIComponent(clientID)}`;
             accessUrl += `&scope=${encodeURIComponent(scope)}`;
             accessUrl += `&redirect_uri=${encodeURIComponent(redirectURI)}`;
@@ -94,15 +94,17 @@ const Spotify = {
     },
     getAllPlaylists() {
         accessToken = Spotify.getAccessToken();
-        const headers = { Authorization: `Bearer ${accessToken}` }
 
-        const getPlaylists = async (headers) => {
-            const response = await fetch('https://api.spotify.com/v1/me/playlists', {headers: headers});
+        const getPlaylists = async (accessToken) => {
+            const response = await fetch('https://api.spotify.com/v1/me/playlists', { headers: { Authorization: `Bearer ${accessToken}` } });
             const jsonResponse = await response.json();
-            console.log(jsonResponse);
+            return jsonResponse.items.map(playlist => ({
+                name: playlist.name,
+                id: playlist.id
+            }));
         }
 
-        getPlaylists(headers);
+        return getPlaylists(accessToken);
 
         // try to find liked songs
 
@@ -111,7 +113,33 @@ const Spotify = {
         // sort tracks
 
         // update currnt spotify playlist
-    }
+    },
+    async getSavedTracks() {
+        accessToken = Spotify.getAccessToken();
+        const headers = { headers: { Authorization: `Bearer ${accessToken}` } }
+        let url = `https://api.spotify.com/v1/me/tracks?limit=50&offset=0`;
+        let allTracks = [];
+
+        do {
+            const response = await fetch(url, headers);
+            const jsonResponse = await response.json();
+            const tracks = jsonResponse.items.map(track => ({
+                dateAdded: track.added_at,
+                id: track.track.id,
+                name: track.track.name,
+                artist: track.track.artists[0].name,
+                album: track.track.album.name,
+                uri: track.track.uri
+            }));
+            allTracks = allTracks.concat(tracks);
+            url = jsonResponse.next;
+        } while (url)
+
+        console.log(allTracks);
+
+        return allTracks;
+
+     }
 }
 
 export default Spotify;

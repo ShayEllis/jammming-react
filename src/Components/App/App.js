@@ -1,5 +1,4 @@
 import React from "react";
-import { SearchBar } from "../SearchBar/SearchBar";
 import AllPlaylists from '../AllPlaylists/AllPlaylists';
 import { SearchResults } from "../SearchResults/SearchResults";
 import { Playlist } from "../Playlist/Playlist";
@@ -50,8 +49,17 @@ class App extends React.Component {
   }
   search(searchTerm) {
     Spotify.search(searchTerm).then(results => {
-      Spotify.getAllPlaylists() //Testing new function - Create its own button
       this.setState({ searchResults:  results})
+
+      //
+      Spotify.getAllPlaylists().then(results => {
+        this.setState({ allPlaylists: results })
+      }) //Testing new function - Create its own button
+
+      //
+      Spotify.getSavedTracks().then(results => {
+        this.setState({ searchResults: results})
+      }) //Testing new function - Create its own button
     })
   }
 
@@ -60,13 +68,14 @@ class App extends React.Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchBar onSearch={this.search} />
+
           <div className="App-playlist">
             <AllPlaylists 
               allPlaylists={this.state.allPlaylists}
             />
             <SearchResults 
               searchResults={this.state.searchResults} 
+              onSearch={this.search}
               onAdd={this.addTrack} 
             />
             <Playlist 
