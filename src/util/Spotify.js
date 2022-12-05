@@ -105,14 +105,6 @@ const Spotify = {
         }
 
         return getPlaylists(accessToken);
-
-        // try to find liked songs
-
-        // get list of tracks
-
-        // sort tracks
-
-        // update currnt spotify playlist
     },
     async getSavedTracks() {
         accessToken = Spotify.getAccessToken();
@@ -135,10 +127,7 @@ const Spotify = {
             url = jsonResponse.next;
         } while (url)
 
-        console.log(allTracks);
-
         return allTracks;
-
      }
 }
 
