@@ -37,29 +37,45 @@ class App extends React.Component {
 
     this.setState({ playlistTracks: [...newTrackList] })
   }
-  savePlaylist(tracks) {
+  savePlaylist(tracks) { // Create alert when playlist is succesfully saved
     const trackList = tracks.map(track => track.uri);
 
-    Spotify.savePlaylist(this.state.playlistName, trackList).then(() => {
-      this.setState({
-        playlistName: "New Playlist",
-        playlistTracks: []
+    try {
+      Spotify.savePlaylist(this.state.playlistName, trackList).then(() => {
+        this.setState({
+          playlistName: "New Playlist",
+          playlistTracks: []
+        });
+        alert("The playlist has been saved to your Spotify account!");
       });
-    });
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        alert(e.message);
+      }
+    }
   }
   search(searchTerm) {
-    Spotify.search(searchTerm).then(results => {
-      this.setState({ searchResults:  results})
-
-      //
-      Spotify.getAllPlaylists().then(results => {
-        this.setState({ allPlaylists: results })
-      }) //Testing new function - Create its own button
-
-      //
-      Spotify.getSavedTracks().then(results => {
-        this.setState({ searchResults: results})
-      }) //Testing new function - Create its own button
+    try {
+      Spotify.search(searchTerm).then(results => {
+        this.setState({ searchResults:  results})
+      })
+    } catch(e) {
+      if (e instanceof SyntaxError) {
+        alert(e.message);
+      }
+    }
+  }
+  loadAllPlaylists() {
+    Spotify.getAllPlaylists().then(results => {
+      this.setState({ allPlaylists: results }) //Working on this
+    })
+  }
+  loadSavedTracks() {
+    Spotify.getSavedTracks().then(results => {
+      this.setState({ 
+        playlistName: "Liked Songs",
+        PlaylistTracks: results
+      }) //Working on this
     })
   }
 
@@ -89,6 +105,10 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }
+
+  componentDidMount() {
+    Spotify.getAccessToken();
   }
 };
 

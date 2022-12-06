@@ -34,10 +34,17 @@ const Spotify = {
         }
     },
     search(searchTerm) {
-        const accessToken = Spotify.getAccessToken(); // can "this" be used?
+        if (!searchTerm) {
+            throw new SyntaxError("Search query is missing")
+        }
+
+        const accessToken = this.getAccessToken();
 
         return fetch(`https://api.spotify.com/v1/search?type=track&q=${searchTerm}`, { headers: { Authorization: `Bearer ${accessToken}` } })
             .then(response => {
+                if(!response.ok) {
+                    throw response
+                }
                 return response.json();
             })
             .then(jsonResponse => {
@@ -55,9 +62,10 @@ const Spotify = {
     },
     savePlaylist(playlistName, tracks) {
         if (!playlistName || !tracks.length) {
-            return
+            throw new SyntaxError("Playlist name missing or no tracks were added.")
         }
-        accessToken = Spotify.getAccessToken();
+
+        accessToken = this.getAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}`}
         const spotifyPlaylistInfo = {
             name: playlistName,
@@ -93,7 +101,7 @@ const Spotify = {
             })
     },
     getAllPlaylists() {
-        accessToken = Spotify.getAccessToken();
+        accessToken = this.getAccessToken();
 
         const getPlaylists = async (accessToken) => {
             const response = await fetch('https://api.spotify.com/v1/me/playlists', { headers: { Authorization: `Bearer ${accessToken}` } });
@@ -107,7 +115,7 @@ const Spotify = {
         return getPlaylists(accessToken);
     },
     async getSavedTracks() {
-        accessToken = Spotify.getAccessToken();
+        accessToken = this.getAccessToken();
         const headers = { headers: { Authorization: `Bearer ${accessToken}` } }
         let url = `https://api.spotify.com/v1/me/tracks?limit=50&offset=0`;
         let allTracks = [];

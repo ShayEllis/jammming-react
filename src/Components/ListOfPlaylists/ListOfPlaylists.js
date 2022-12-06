@@ -1,8 +1,8 @@
 import React from 'react';
 import PlaylistRow from '../PlaylistRow/PlaylistRow'
-import './PlaylistList.css';
+import './ListOfPlaylists.css';
 
-class PlaylistList extends React.Component {
+class ListOfPlaylists extends React.Component {
     render() {
         const playlistItem = this.props.allPlaylists.map(playlist => <PlaylistRow key={playlist.id} name={playlist.name}/>)
 
@@ -16,4 +16,4 @@ class PlaylistList extends React.Component {
     }
 }
 
-export default PlaylistList;
+export default ListOfPlaylists;
