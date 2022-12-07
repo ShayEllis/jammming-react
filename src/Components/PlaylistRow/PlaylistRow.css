@@ -11,3 +11,7 @@
     justify-content: center;
     height: 72px;
 }
+
+.PlaylistRow-information h3:hover {
+    cursor: pointer;
+}

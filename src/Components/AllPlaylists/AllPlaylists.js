@@ -7,7 +7,10 @@ class AllPlaylists extends React.Component {
         return (
             <div className="AllPlaylists">
                 <h2>All Playlists</h2>
-                <ListOfPlaylists allPlaylists={this.props.allPlaylists}/>
+                <ListOfPlaylists 
+                    allPlaylists={this.props.allPlaylists}
+                    loadPlaylistInfo={this.props.loadPlaylistInfo}
+                />
             </div>
         )
     }

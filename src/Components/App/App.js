@@ -19,7 +19,8 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
-    Spotify.getAccessToken();
+    this.loadPlaylistInfo = this.loadPlaylistInfo.bind(this);
+
   }
   updatePlaylistName(newName) {
     this.setState({ playlistName: newName });
@@ -38,7 +39,7 @@ class App extends React.Component {
 
     this.setState({ playlistTracks: [...newTrackList] })
   }
-  savePlaylist(tracks) { // Create alert when playlist is succesfully saved
+  savePlaylist(tracks) {
     const trackList = tracks.map(track => track.uri);
 
     try {
@@ -58,7 +59,7 @@ class App extends React.Component {
   search(searchTerm) {
     try {
       Spotify.search(searchTerm).then(results => {
-        this.setState({ searchResults:  results})
+        this.setState({ searchResults: results})
       })
     } catch(e) {
       if (e instanceof SyntaxError) {
@@ -68,16 +69,23 @@ class App extends React.Component {
   }
   loadAllPlaylists() {
     Spotify.getAllPlaylists().then(results => {
-      this.setState({ allPlaylists: results }) //Working on this
+      this.setState({ allPlaylists: [{ name: "Liked Songs", id: "likedSongs" }, ...results] }) //Working on this
     })
   }
   loadSavedTracks() {
     Spotify.getSavedTracks().then(results => {
       this.setState({ 
         playlistName: "Liked Songs",
-        PlaylistTracks: results
-      }) //Working on this
+        playlistTracks: results
+      })
     })
+  }
+  loadPlaylistInfo(playlistName) {
+    if (playlistName === "Liked Songs") {
+      this.loadSavedTracks();
+      //alert(`${playlistName} loaded.`);
+    }
+
   }
 
   render() {
@@ -89,6 +97,7 @@ class App extends React.Component {
           <div className="App-playlist">
             <AllPlaylists 
               allPlaylists={this.state.allPlaylists}
+              loadPlaylistInfo={this.loadPlaylistInfo}
             />
             <SearchResults 
               searchResults={this.state.searchResults} 
@@ -106,6 +115,11 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }
+
+  componentDidMount() {
+    Spotify.getAccessToken();
+    this.loadAllPlaylists();
   }
 };
 

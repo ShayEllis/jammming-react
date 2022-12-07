@@ -106,7 +106,7 @@ const Spotify = {
         const getPlaylists = async (accessToken) => {
             const response = await fetch('https://api.spotify.com/v1/me/playlists', { headers: { Authorization: `Bearer ${accessToken}` } });
             const jsonResponse = await response.json();
-            return jsonResponse.items.map(playlist => ({
+            return await jsonResponse.items.map(playlist => ({
                 name: playlist.name,
                 id: playlist.id
             }));
@@ -133,7 +133,7 @@ const Spotify = {
             }));
             allTracks = allTracks.concat(tracks);
             url = jsonResponse.next;
-        } while (url)
+        } while (url && allTracks.length < 100)
 
         return allTracks;
      }
