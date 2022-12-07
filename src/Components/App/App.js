@@ -80,12 +80,18 @@ class App extends React.Component {
       })
     })
   }
-  loadPlaylistInfo(playlistName) {
+  loadPlaylistInfo(playlistName, playlistId) {
     if (playlistName === "Liked Songs") {
       this.loadSavedTracks();
-      //alert(`${playlistName} loaded.`);
+    } else {
+      Spotify.getPlaylistTracks(playlistId).then(results => {
+        this.setState({
+          playlistName: playlistName,
+          playlistTracks: results
+        })
+      })
     }
-
+    alert(`${playlistName} loaded.`)
   }
 
   render() {

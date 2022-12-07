@@ -7,7 +7,7 @@ class PlaylistRow extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
     handleClick() {
-        this.props.loadPlaylistInfo(this.props.name)
+        this.props.loadPlaylistInfo(this.props.name, this.props.playlistId)
     }
     render() {
         return (

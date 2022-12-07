@@ -4,7 +4,7 @@ import './ListOfPlaylists.css';
 
 class ListOfPlaylists extends React.Component {
     render() {
-        const playlistItem = this.props.allPlaylists.map(playlist => <PlaylistRow key={playlist.id} name={playlist.name} loadPlaylistInfo={this.props.loadPlaylistInfo}/>)
+        const playlistItem = this.props.allPlaylists.map(playlist => <PlaylistRow key={playlist.id} playlistId={playlist.id} name={playlist.name} loadPlaylistInfo={this.props.loadPlaylistInfo}/>)
 
         return (
             <div>

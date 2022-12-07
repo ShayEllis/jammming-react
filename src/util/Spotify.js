@@ -136,6 +136,24 @@ const Spotify = {
         } while (url && allTracks.length < 100)
 
         return allTracks;
+     },
+     async getPlaylistTracks(playlistId) {
+        accessToken = this.getAccessToken();
+        const headers = { headers: { Authorization: `Bearer ${accessToken}` } };
+        let url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`
+
+        const response = await fetch(url, headers);
+        const jsonResponse = await response.json();
+        const tracks = jsonResponse.items.map(track => ({
+            dateAdded: track.added_at,
+            id: track.track.name,
+            name: track.track.name,
+            artist: track.track.artists[0].name,
+            album: track.track.album.name,
+            uri: track.track.uri
+        }))
+
+        return tracks
      }
 }
 
